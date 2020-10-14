@@ -3,7 +3,10 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'HomeController');
-Route::get('posts/{slug}','PostController@show');
+Route::get('posts', 'PostController@index');
+Route::get('posts/create', 'PostController@create');
+Route::post('posts/store', 'PostController@store');
+Route::get('posts/{post:slug}', 'PostController@show');
 Route::get('/about', function () {
     return view('about');
 });
@@ -13,4 +16,3 @@ Route::get('/contact', function () {
 Route::get('/login', function () {
     return view('login');
 });
-

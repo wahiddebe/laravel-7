@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="/">Navbar</a>
+  <a class="navbar-brand" href="/">{{config('app.name')}}</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
     aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -11,6 +11,7 @@
       <a class="nav-link{{ request()->is('contact') ? ' active' : '' }}" href="/contact">contact</a>
       <a class="nav-link{{ request()->is('about') ? ' active' : '' }}" href="/about">about</a>
       <a class="nav-link{{ request()->is('login') ? ' active' : '' }}" href="/login">login</a>
+      <a class="nav-link{{ request()->is('posts') ? ' active' : '' }}" href="/posts">posts</a>
     </div>
   </div>
 </nav>
