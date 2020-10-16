@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PostRequest;
 use App\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -28,7 +29,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view('posts.create');
+        return view('posts.create', ['post' => new Post(), 'submit' => 'Create']);
     }
 
     /**
@@ -37,15 +38,13 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PostRequest $request)
     {
-        $post = new Post;
-        $post->title = $request->title;
-        $post->slug = Str::slug($request->title);
-        $post->body = $request->body;
-        $post->save();
-
-        return redirect()->to('posts');
+        $attr = $request->all();
+        $attr['slug'] = Str::slug(request('title'));
+        Post::create($attr);
+        session()->flash('success', 'The Post was created');
+        return redirect('posts');
     }
 
     /**
@@ -67,7 +66,7 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        //
+        return view('posts.edit', compact('post'));
     }
 
     /**
@@ -77,9 +76,12 @@ class PostController extends Controller
      * @param  \App\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Post $post)
+    public function update(PostRequest $request, Post $post)
     {
-        //
+        $attr = $request->all();
+        $post->update($attr);
+        session()->flash('success', 'The Post was updated');
+        return redirect('posts');
     }
 
     /**
@@ -90,6 +92,8 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        //
+        $post->delete();
+        session()->flash('success', 'The Post was Destroyed');
+        return redirect('posts');
     }
 }
