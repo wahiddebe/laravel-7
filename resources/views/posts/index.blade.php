@@ -4,7 +4,15 @@
     <div class="d-flex justify-content-between">
         @if($posts->count())
         <div>
+            @isset($category)
+            <h4>Category : {{$category->name}}</h4>
+            @endisset
+            @isset($tag)
+            <h4>Tag : {{$tag->name}}</h4>
+            @endisset
+            @if (!isset($tag)&&!isset($category))
             <h4>All Post</h4>
+            @endif
             <hr>
         </div>
         <div>

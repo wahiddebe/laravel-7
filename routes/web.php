@@ -13,6 +13,9 @@ Route::patch('posts/{post:slug}/edit', 'PostController@update');
 
 Route::delete('posts/{post:slug}/delete', 'PostController@destroy');
 
+Route::get('categories/{category:slug}', 'CategoryController@show');
+Route::get('tags/{tag:slug}', 'TagController@show');
+
 Route::get('posts/{post:slug}', 'PostController@show');
 Route::get('/about', function () {
     return view('about');

@@ -5,11 +5,20 @@
     <h1>
         {{$post->title}}
     </h1>
+    <div class="text-secondary">
+        <a href="/categories/{{$post->category->slug}}">{{$post->category->name}}</a>
+        &middot;
+        {{$post->created_at->format('d F,y')}}
+        &middot;
+        @foreach ($post->tags as $tag)
+        <a href="/tags/{{$tag->slug}}">{{$tag->name}}</a>
+        @endforeach
+    </div>
     <p>
         {{$post->body}}
     </p>
     <!-- Button trigger modal -->
-    <button type="button" class="btn btn-link text-danger btn-sm p-0" data-toggle="modal" data-target="#exampleModal">
+    <button type=" button" class="btn btn-link text-danger btn-sm p-0" data-toggle="modal" data-target="#exampleModal">
         Delete
     </button>
 
