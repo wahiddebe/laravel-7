@@ -17,6 +17,7 @@
     <p>
         {{$post->body}}
     </p>
+    @auth
     <!-- Button trigger modal -->
     <button type=" button" class="btn btn-link text-danger btn-sm p-0" data-toggle="modal" data-target="#exampleModal">
         Delete
@@ -54,5 +55,6 @@
             </div>
         </div>
     </div>
+    @endauth
 </div>
 @endsection
