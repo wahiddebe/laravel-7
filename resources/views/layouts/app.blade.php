@@ -26,6 +26,7 @@
         @include('layouts.nav')
 
         <main class="py-4">
+            @include('alert')
             @yield('content')
         </main>
     </div>

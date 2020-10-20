@@ -50,7 +50,7 @@ class PostController extends Controller
         $attr = $request->all();
         $attr['slug'] = Str::slug(request('title'));
         $attr['category_id'] = request('category');
-        $post = Post::create($attr);
+        $post = auth()->user()->posts()->create($attr);
         $post->tags()->attach(request('tags'));
         session()->flash('success', 'The Post was created');
         return redirect('posts');
@@ -91,6 +91,7 @@ class PostController extends Controller
      */
     public function update(PostRequest $request, Post $post)
     {
+        $this->authorize('update', $post);
         $attr = $request->all();
         $attr['category_id'] = request('category');
         $post->update($attr);
@@ -107,6 +108,7 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
+        $this->authorize('delete', $post);
         $post->tags()->detach();
         $post->delete();
         session()->flash('success', 'The Post was Destroyed');

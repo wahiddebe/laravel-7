@@ -6,6 +6,9 @@
         {{$post->title}}
     </h1>
     <div class="text-secondary">
+        {{'wrote by : '.$post->author->name}}
+    </div>
+    <div class="text-secondary">
         <a href="/categories/{{$post->category->slug}}">{{$post->category->name}}</a>
         &middot;
         {{$post->created_at->format('d F,y')}}
@@ -14,10 +17,12 @@
         <a href="/tags/{{$tag->slug}}">{{$tag->name}}</a>
         @endforeach
     </div>
+    <hr>
     <p>
         {{$post->body}}
     </p>
-    @auth
+
+    @can ('delete',$post)
     <!-- Button trigger modal -->
     <button type=" button" class="btn btn-link text-danger btn-sm p-0" data-toggle="modal" data-target="#exampleModal">
         Delete
@@ -55,6 +60,6 @@
             </div>
         </div>
     </div>
-    @endauth
+    @endcan
 </div>
 @endsection
