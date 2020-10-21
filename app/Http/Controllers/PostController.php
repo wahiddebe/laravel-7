@@ -7,6 +7,7 @@ use App\Http\Requests\PostRequest;
 use App\Post;
 use App\Tag;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class PostController extends Controller
@@ -47,9 +48,17 @@ class PostController extends Controller
      */
     public function store(PostRequest $request)
     {
+        $request->validate([
+            'thumbnail' => 'image|mimes:jpeg,jpg,png,svg|max:4096'
+        ]);
+
         $attr = $request->all();
-        $attr['slug'] = Str::slug(request('title'));
+        $slug = Str::slug(request('title'));
+        $attr['slug'] = $slug;
+        $thumbnail = request()->file('thumbnail') ? request()->file('thumbnail')->store("images/posts") : null;
+
         $attr['category_id'] = request('category');
+        $attr['thumbnail'] = $thumbnail;
         $post = auth()->user()->posts()->create($attr);
         $post->tags()->attach(request('tags'));
         session()->flash('success', 'The Post was created');
@@ -91,9 +100,19 @@ class PostController extends Controller
      */
     public function update(PostRequest $request, Post $post)
     {
+        $request->validate([
+            'thumbnail' => 'image|mimes:jpeg,jpg,png,svg|max:4096'
+        ]);
         $this->authorize('update', $post);
+        if (request()->file('thumbnail')) {
+            Storage::delete($post->thumbnail);
+            $thumbnail = request()->file('thumbnail')->store("images/posts");
+        } else {
+            $thumbnail = $post->thumbnail;
+        }
         $attr = $request->all();
         $attr['category_id'] = request('category');
+        $attr['thumbnail'] = $thumbnail;
         $post->update($attr);
         $post->tags()->sync(request('tags'));
         session()->flash('success', 'The Post was updated');
@@ -108,6 +127,7 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
+        Storage::delete($post->thumbnail);
         $this->authorize('delete', $post);
         $post->tags()->detach();
         $post->delete();

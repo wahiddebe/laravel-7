@@ -29,6 +29,8 @@
                 <div class="card-header">
                     {{Str::limit($post->title, 25,)}}
                 </div>
+                <img style="height: 270px; object-fit:cover; object-position:center; " class="card-img-top"
+                    src="{{$post->takeImage}}" alt="">
                 <div class="card-body">
                     <div>
                         {{ Str::limit($post->body, 100, '') }}
